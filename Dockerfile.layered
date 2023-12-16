@@ -1,0 +1,20 @@
+# using jre instead of jdk with an alias builder
+FROM eclipse-temurin:17.0.4.1_1-jre as builder
+WORKDIR extracted
+ADD target/*.jar app.jar
+# running a command : as part of java9 or 10 java supports extracting # layers from jar file this layers: all dependencies
+# will be stored in dependencies folder ...all source code inside src main is in application folder
+# so this command will extract all this layers and store them inside extracted
+RUN java -Djarmode=layertools -jar app.jar extract
+
+
+# second stage
+# copy all this layers inside an application folder
+FROM eclipse-temurin:17.0.4.1_1-jre
+WORKDIR application
+COPY --from=builder extracted/dependencies/ ./
+COPY --from=builder extracted/spring-boot-loader/ ./
+COPY --from=builder extracted/snapshot-dependencies/ ./
+COPY --from=builder extracted/application/ ./
+EXPOSE 8080
+ENTRYPOINT ["java","org.springframework.boot.loader.JarLauncher"]
