@@ -16,8 +16,6 @@ public class SecurityConfig {
                 .authorizeExchange(exchange->exchange
                         .pathMatchers("/eureka/**")
                         .permitAll()
-                        .pathMatchers("/api/order")
-                        .hasRole("admin")
                         .anyExchange()
                         .authenticated())
                 .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt);
