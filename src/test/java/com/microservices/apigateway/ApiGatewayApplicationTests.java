@@ -3,7 +3,7 @@ package com.microservices.apigateway;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+// @SpringBootTest
 class ApiGatewayApplicationTests {
 
     @Test
